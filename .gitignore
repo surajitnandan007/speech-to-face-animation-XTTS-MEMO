@@ -1,0 +1,11 @@
+.venv/
+storage/
+models/
+outputs/
+downloads/
+reference_repo/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env

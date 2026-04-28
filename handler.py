@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import uuid
+import traceback
 from pathlib import Path
 from typing import Any
 
@@ -80,7 +81,7 @@ def handler(job: dict[str, Any]) -> dict[str, Any]:
         return {
             "status": "error",
             "message": str(exc),
-            "logs": getattr(exc, "logs", ""),
+            "logs": getattr(exc, "logs", "") or traceback.format_exc(),
         }
 
     response: dict[str, Any] = {

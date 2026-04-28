@@ -1,0 +1,11 @@
+{
+  "input": {
+    "audio_path": "memo_upstream/assets/examples/speech.wav",
+    "source_image_path": "memo_upstream/assets/examples/dicaprio.jpg",
+    "return_video_base64": false,
+    "options": {
+      "seed": 42,
+      "language": "en"
+    }
+  }
+}

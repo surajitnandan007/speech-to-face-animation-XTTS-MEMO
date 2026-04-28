@@ -35,7 +35,16 @@ def main() -> int:
             options=GenerationOptions(language=args.language, seed=args.seed),
         )
     except Exception as exc:
-        print(json.dumps({"status": "error", "message": str(exc)}, indent=2))
+        print(
+            json.dumps(
+                {
+                    "status": "error",
+                    "message": str(exc),
+                    "logs": getattr(exc, "logs", ""),
+                },
+                indent=2,
+            )
+        )
         return 1
 
     print(

@@ -1,6 +1,6 @@
 .venv/
 storage/
-models/
+/models/
 outputs/
 downloads/
 reference_repo/

@@ -28,9 +28,10 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 COPY requirements.txt /app/requirements.txt
+COPY requirements-runpod.txt /app/requirements-runpod.txt
 RUN pip install --upgrade pip setuptools wheel && \
     pip install -r /app/requirements.txt && \
-    pip install "runpod>=1.7.9" "TTS==0.22.0"
+    pip install -r /app/requirements-runpod.txt
 
 COPY . /app
 

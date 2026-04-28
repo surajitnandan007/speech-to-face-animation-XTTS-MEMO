@@ -12,6 +12,8 @@ from .models import GenerationOptions
 
 
 ALLOWED_IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp"}
+MEMO_REMOTE_MODEL = "memoavatar/memo"
+REQUIRED_MEMO_MODEL_SUBDIRS = ("reference_net", "diffusion_net", "image_proj", "audio_proj")
 
 
 class MemoService:
@@ -118,10 +120,15 @@ class MemoService:
 
     def _materialize_runtime_config(self, target_path: Path) -> Path:
         config_data = yaml.safe_load(self.config.memo_config_path.read_text(encoding="utf-8"))
-        config_data["model_name_or_path"] = str(self.config.memo_model_dir)
+        config_data["model_name_or_path"] = self._resolve_model_name_or_path()
         config_data["misc_model_dir"] = str(self.config.memo_misc_model_dir)
         target_path.write_text(yaml.safe_dump(config_data, sort_keys=False), encoding="utf-8")
         return target_path
+
+    def _resolve_model_name_or_path(self) -> str:
+        if all((self.config.memo_model_dir / subdir).exists() for subdir in REQUIRED_MEMO_MODEL_SUBDIRS):
+            return str(self.config.memo_model_dir)
+        return MEMO_REMOTE_MODEL
 
     @staticmethod
     def _combine_logs(stdout: str, stderr: str) -> str:

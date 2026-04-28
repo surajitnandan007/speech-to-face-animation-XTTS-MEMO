@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 from .config import AppConfig
@@ -39,6 +40,8 @@ class XttsService:
 
     def _get_tts(self):
         if self._tts is None:
+            os.environ.setdefault("COQUI_TOS_AGREED", "1")
+            os.environ.setdefault("TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD", "1")
             try:
                 from TTS.api import TTS
             except ModuleNotFoundError as exc:  # pragma: no cover - external runtime issue
@@ -49,6 +52,6 @@ class XttsService:
                 self._tts = TTS(self.config.xtts_model_name)
             except Exception as exc:  # pragma: no cover - external runtime issue
                 raise ConfigurationError(
-                    f"Failed to initialize XTTS model {self.config.xtts_model_name}."
+                    f"Failed to initialize XTTS model {self.config.xtts_model_name}: {exc!r}"
                 ) from exc
         return self._tts
